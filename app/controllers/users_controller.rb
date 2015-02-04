@@ -1,6 +1,9 @@
 class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
+    if params[:size].is_a? Numeric
+      @size = params[:size]
+    end
   end
   
   def new
