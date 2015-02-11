@@ -14,8 +14,9 @@ describe User do
   it { should respond_to(:password_digest) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
+  it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
-  
+
   it { should be_valid }
 
   # present test group ---
@@ -34,8 +35,9 @@ describe User do
     end
     it { should_not be_valid }
   end
-  #-----------------------------------------------------------------------------
-  
+  # present test group ---/
+
+  # validate test group ---
   describe "when name is too long" do
     before { @user.name = "a" * 51 }
     it { should_not be_valid }
@@ -81,7 +83,6 @@ describe User do
     end
   end
 
-  # check password group ---
   describe "when password doesn't match confirmation" do
     before { @user.password_confirmation = "mismatch" }
     it { should_not be_valid }
@@ -105,6 +106,12 @@ describe User do
     before { @user.password = @user.password_confirmation = "a" * 5 }
     it { should be_invalid }
   end
-  #-----------------------------------------------------------------------------
-  
+  # validate test group ---/
+
+  # session test group ---
+  describe "remember toke" do
+    before { @user.save }
+    its(:remember_token) { should_not be_blank }
+  end
+  # session test group ---/
 end
