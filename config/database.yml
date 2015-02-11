@@ -21,7 +21,7 @@ development:
 #  database: db/test.sqlite3
 #  pool: 5
 #  timeout: 5000
-test:
+test: &test
   adapter: postgresql
   host: localhost
   username: vulpes
@@ -37,3 +37,6 @@ production:
   username: vulpes
   database: vulpes
 
+
+cucumber:
+  <<: *test
