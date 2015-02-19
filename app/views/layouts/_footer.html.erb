@@ -11,3 +11,20 @@
     </ul>
   </nav>
 </footer>
+
+<% if Rails.env.development? %>
+  <footer class="footer">
+    <pre class="warning">
+fullpath: <%= request.fullpath %>
+header[content-type]: <%= request.headers["Content-Type"] %>
+header[lang]: <%= request.headers["lang"] %>
+ip: <%= request.ip %>
+media-type: <%= request.media_type %>
+original_url: <%= request.original_url %>
+method: <%= request.method %>
+method-symbol: <%= request.method_symbol %>
+remote-ip: <%= request.remote_ip %>
+uuid: <%= request.uuid %>
+    </pre>
+  </footer>
+<% end %>
