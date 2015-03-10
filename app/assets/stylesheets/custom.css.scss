@@ -129,6 +129,35 @@ aside {
     margin-right: 10px;
 }
 
+.stast {
+    overflow: auto;
+    a {
+        float: left;
+        padding: 0 10px;
+        border-left: 1px solid $grayLight;
+        color: gray;
+        &:first_child {
+            padding-left: 0;
+            border: 0;
+        }
+        &:hover {
+            text-decoration: none;
+            color: blue;
+        }
+    }
+    strong {
+        display: block;
+    }
+}
+
+.user_avatars {
+    overflow: auto;
+    margin-top: 10px;
+    .gravatar {
+        margin: 1xp 1px;
+    }
+}
+
 /* forms */
 input,
 textarea,
@@ -198,3 +227,4 @@ input {
         margin-bottom: 5px;
     }
 }
+
