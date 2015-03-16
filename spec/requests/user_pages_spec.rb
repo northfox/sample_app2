@@ -143,6 +143,7 @@ describe "User pages" do
           
           it { should have_content("error") }
           it { should have_content("Name can't be blank") }
+          it { should have_content("Login name can't be blank") }
           it { should have_content(/Password is too short.+minimum is 6 characters/) }
           it { should have_content("Password can't be blank") }
           it { should have_content("Email can't be blank") }
@@ -164,6 +165,7 @@ describe "User pages" do
     describe "with valid information" do
       before do
         fill_in "Name", with: "Example User"
+        fill_in "Login name", with: "Example"
         fill_in "Email", with: "example@example.com"
         fill_in "Password", with: "foobar"
         fill_in "Confirmation", with: "foobar"
@@ -205,9 +207,11 @@ describe "User pages" do
 
     describe "with valid information" do
       let(:new_name) { "New Name" }
+      let(:new_login_name) { "NewName" }
       let(:new_email) { "new@example.com" }
       before do
         fill_in "Name", with: new_name
+        fill_in "Login name", with: new_login_name
         fill_in "Email", with: new_email
         fill_in "Password", with: user.password
         fill_in "Confirmation", with: user.password

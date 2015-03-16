@@ -3,7 +3,7 @@ require 'spec_helper'
 describe User do
 
   before do
-    @user = User.new(name: "example user", email: "user@example.com",
+    @user = User.new(name: "example user", login_name: "example", email: "user@example.com",
                      password: "foobar", password_confirmation: "foobar")
   end
 
@@ -17,15 +17,17 @@ describe User do
   it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
   it { should respond_to(:admin) }
+  it { should respond_to(:login_name) }
+  
   it { should respond_to(:microposts) }
   it { should respond_to(:feed) }
   it { should respond_to(:relationships) }
   it { should respond_to(:followed_users) }
   it { should respond_to(:followers) }
   it { should respond_to(:reverse_relationships) }
+  
   it { should respond_to(:follow!) }
   it { should respond_to(:unfollow!) }
-  
   
   it { should be_valid }
   it { should_not be_admin }
@@ -48,6 +50,10 @@ describe User do
     before { @user.email = "" }
     it { should_not be_valid }
   end
+  describe "when login name is not present" do
+    before { @user.login_name = "" }
+    it { should_not be_valid }
+  end
   describe "when password is not present" do
     before do
       @user = User.new(name: "Example User", email: "user@example.com",
@@ -62,6 +68,29 @@ describe User do
     before { @user.name = "a" * 51 }
     it { should_not be_valid }
   end
+  describe "when login_name is too long" do
+    before { @user.login_name = "a" * 51 }
+    it { should_not be_valid }
+  end
+  
+  describe "when login_name format is invalid" do
+    it "should be invalid" do
+      invalid_login_name = %w[user@test]#, u\\t, u\,t, u\[t, u\]t, u!t, u"t, u#t, u$t, u%t, u&t, u't, u"t, u(t, u)t, u{t, u}t, u;t, u:t, u+t, u*t, u/t, u^t, u~t, u|t, u=t, u t]]
+      invalid_login_name.each do |name|
+        @user.login_name = name
+        expect(@user).not_to be_valid
+      end
+    end
+  end
+  describe "when login_name format is valid" do
+    it "should be valid" do
+      valid_login_name = %w[user0123456789test]#, u_-.t]
+      valid_login_name.each do |name|
+        @user.login_name = name
+        expect(@user).to be_valid
+      end
+    end
+  end
 
   describe "when email format is invalid" do
     it "should be invalid" do
@@ -72,7 +101,7 @@ describe User do
       end
     end
   end
-
+  
   describe "when email format is valid" do
     it "should be valid" do
       valid_address = %w[user@foo.COM A_US-ER@f.b.org frst.lst@foo.jp a+b@baz.cn]
@@ -82,7 +111,7 @@ describe User do
       end
     end
   end
-
+  
   describe "when email address is already taken" do
     before do
       user_with_same_email = @user.dup
